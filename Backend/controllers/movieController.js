@@ -24,7 +24,8 @@ movieController.getMovies = async (req, res) => {
     const { page = 1, limit = 10, type, approved, year, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
     const query = { isDeleted: false };
 
-    if (req.user.role !== 'admin') {
+    // For unauthenticated users or non-admin users, only show approved movies
+    if (!req.user || req.user.role !== 'admin') {
       query.approved = true;
     }
 
@@ -62,7 +63,8 @@ movieController.getMovieById = async (req, res) => {
       return res.status(404).json({ message: 'Movie not found' });
     }
 
-    if (req.user.role !== 'admin' && movie.createdBy._id.toString() !== req.user.id && !movie.approved) {
+    // For unauthenticated users or non-admin users, only show approved movies
+    if (!req.user || (req.user.role !== 'admin' && movie.createdBy._id.toString() !== req.user.id && !movie.approved)) {
       return res.status(403).json({ message: 'Not authorized' });
     }
 

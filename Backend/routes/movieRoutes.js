@@ -28,14 +28,12 @@ const upload = multer({
   }
 });
 
-// All movie routes require authentication
-router.use(verifyToken);
-
-// GET /api/movies - Get all movies (with filters)
+// Public routes for viewing movies (no authentication required)
 router.get('/', movieController.getMovies);
-
-// GET /api/movies/:id - Get movie by ID
 router.get('/:id', movieController.getMovieById);
+
+// All other movie routes require authentication
+router.use(verifyToken);
 
 // POST /api/movies - Create new movie
 router.post('/', upload.single('poster'), movieValidation, movieController.createMovie);
