@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import api from '../utils/api';
 import MovieCard from '../components/MovieCardNew';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
-const UPLOAD_BASE_URL = API_BASE_URL.replace('/api', '');
-
 const Home = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [trendingShows, setTrendingShows] = useState([]);
@@ -31,7 +28,7 @@ const Home = () => {
         }
 
         const img = new Image();
-        const imageUrl = `${UPLOAD_BASE_URL}${movie.poster}`;
+        const imageUrl = `http://localhost:5000${movie.poster}`;
 
         img.onload = () => {
           setImagesLoaded(prev => new Set([...prev, movie._id]));
